@@ -39,3 +39,30 @@ def log_agent_run(input_data, thought, decision, tools_used):
     ))
     conn.commit()
     conn.close()
+
+    
+def fetch_agent_history(limit: int = 50):
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("""
+        SELECT timestamp, input, thought, decision, tools_used
+        FROM agent_logs
+        ORDER BY id DESC
+        LIMIT ?
+    """, (limit,))
+
+    rows = c.fetchall()
+    conn.close()
+
+    history = []
+    for row in rows:
+        history.append({
+            "timestamp": row[0],
+            "input": json.loads(row[1]),
+            "thought": row[2],
+            "decision": row[3],
+            "tools_used": json.loads(row[4]),
+        })
+
+    return history

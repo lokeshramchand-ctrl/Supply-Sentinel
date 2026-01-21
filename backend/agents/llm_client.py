@@ -1,18 +1,20 @@
-import os
-from openai import OpenAI
-from dotenv import load_dotenv
+import requests
 
-load_dotenv()
+def call_local_llm(system_prompt: str, user_input: str) -> str:
+    response = requests.post(
+        "http://localhost:11434/api/generate",
+        json={
+            "model": "mistral",
+            "prompt": f"""
+{system_prompt}
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+User input:
+{user_input}
 
-def call_llm(system_prompt: str, user_input: str) -> str:
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_input}
-        ],
-        temperature=0.2
+Respond ONLY in valid JSON.
+""",
+            "stream": False
+        }
     )
-    return response.choices[0].message.content
+
+    return response.json()["response"]
