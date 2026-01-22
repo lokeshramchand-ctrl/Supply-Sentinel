@@ -118,7 +118,11 @@ This mirrors how real-world agent systems are designed in modern startups.
 
 ## Architecture
 
-High-level flow:
+### System Diagram
+
+![SupplySentinel Architecture Diagram](image.png)
+
+### High-level Flow
 
 ```
 User / System
