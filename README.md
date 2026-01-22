@@ -322,6 +322,19 @@ If extended further, improvements would include:
 
 ---
 
+## Failure Modes & Safeguards
+
+This system explicitly handles common agent failure cases:
+
+- LLM returns invalid JSON → retried with schema-enforced prompt
+- LLM hallucination → deterministic guardrails override
+- Tool execution failure → logged and downgraded to LOG action
+- Ambiguous input → default MEDIUM risk with human review
+
+This mirrors real-world constraints where agents must fail safely.
+
+---
+
 ## Why this project exists
 
 This project was built to demonstrate:
