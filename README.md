@@ -8,6 +8,35 @@ This project is designed to demonstrate how **production-style AI agent backends
 
 ---
 
+## Quick Start
+
+### Backend Setup
+```bash
+cd backend
+pip install -r requirements.txt
+export OPENAI_API_KEY=your_api_key_here
+python main.py
+```
+
+### Seed Database (Optional)
+```bash
+cd backend
+python seed_data.py          # Add sample supply orders
+python seed_data.py clear   # Clear all data
+```
+
+### Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Services & Access
+- **Backend API**: `http://localhost:8000` (FastAPI)
+- **Frontend UI**: `http://localhost:3000` (Next.js)
+- **Database**: SQLite at `backend/storage/agent_logs.db`
+
 ## Problem
 
 In many operations teams (supply chain, finance ops, logistics, procurement), critical signals like:

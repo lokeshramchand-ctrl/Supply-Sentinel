@@ -9,7 +9,7 @@ DB_PATH = BASE_DIR / "storage" / "agent_logs.db"
 def init_db():
     DB_PATH.parent.mkdir(exist_ok=True)
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     c = conn.cursor()
     c.execute("""
         CREATE TABLE IF NOT EXISTS agent_logs (
@@ -25,7 +25,7 @@ def init_db():
     conn.close()
 
 def log_agent_run(input_data, thought, decision, tools_used):
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     c = conn.cursor()
     c.execute("""
         INSERT INTO agent_logs (timestamp, input, thought, decision, tools_used)
@@ -42,7 +42,7 @@ def log_agent_run(input_data, thought, decision, tools_used):
 
     
 def fetch_agent_history(limit: int = 50):
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     c = conn.cursor()
 
     c.execute("""
