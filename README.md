@@ -76,6 +76,21 @@ This mirrors how real-world agent systems are designed in modern startups.
 
 ---
 
+## UI Preview
+
+### Dashboard – Agent Decisions & History
+This view shows recent agent runs, including risk level, reasoning, and timestamp.
+
+![Dashboard Screenshot](frontend/screenshots/dashboard.png)
+
+### Submit Event – Simulate Operational Signals
+This screen allows users to submit new order updates and trigger the agent workflow.
+
+![Submit Event Screenshot](frontend/screenshots/submit.png)
+
+---
+
+
 ## Core Capabilities
 
 * **AI Agent Reasoning**
