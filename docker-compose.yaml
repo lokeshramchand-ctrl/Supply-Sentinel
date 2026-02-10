@@ -15,12 +15,7 @@ services:
     command: sh -c "python validate_env.py && python seed_data.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
     networks:
       - suppliesentinel-network
-    healthcheck:
-      test: ["CMD", "python", "-c", "import http.client; h=http.client.HTTPConnection('localhost',8000); h.request('GET','/docs'); h.getresponse()"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+
 
   frontend:
     build:
@@ -30,8 +25,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
     networks:
