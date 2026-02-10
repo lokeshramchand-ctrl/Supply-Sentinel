@@ -1,5 +1,5 @@
-//const BASE_URL = "http://127.0.0.1:8000"; --> local development
-const BASE_URL = "https://occo8004goko4o048808c4os.deploy.priyatham.in";
+const BASE_URL = process.env.NEXT_PUBLIC_BASEURL || 'http://localhost:8000';
+
 export async function fetchHistory() {
   const res = await fetch(`${BASE_URL}/agent/history`);
   return res.json();

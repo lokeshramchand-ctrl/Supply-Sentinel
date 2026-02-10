@@ -2,6 +2,7 @@ fastapi
 uvicorn
 pydantic
 openai
+google.genai
 python-dotenv
 tenacity
 requests
