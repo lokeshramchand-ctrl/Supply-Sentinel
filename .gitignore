@@ -1,1 +1,2 @@
 *.env
+./backend/validate_env.py
