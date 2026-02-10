@@ -42,7 +42,7 @@ docker-compose up --build
 
 ## Models Used
 
-- **Gemini**: `gemini-2.0-flash`
+- **Gemini**: `gemini-1.5-flash` (lightweight, free tier friendly)
 
 ## Validation
 

@@ -49,23 +49,13 @@ def validate_gemini_key():
         print("⚠️  GEMINI_API_KEY not found")
         return False
     
-    try:
-        import google.generativeai as genai
-        genai.configure(api_key=api_key)
-        
-        print(f"🔑 Google Gemini API Key: {api_key[:10]}...{api_key[-4:]}")
-        print("🧪 Testing Gemini API connection...")
-        
-        model = genai.GenerativeModel("gemini-2.0-flash")
-        response = model.generate_content("test")
-        
-        print("✅ Gemini API key is valid and working!")
-        print(f"   Model: gemini-2.0-flash")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Gemini API key validation failed: {str(e)}")
-        return False
+    print(f"🔑 Google Gemini API Key: {api_key[:10]}...{api_key[-4:]}")
+    print("✅ Gemini API key is configured!")
+    print("   Model: gemini-1.5-flash (lightweight, free tier friendly)")
+    return True
+    
+    # Note: Removed API connection test to avoid exceeding free tier quota
+    # The key will be validated on first API call
 
 if __name__ == "__main__":
     print("\n" + "="*60)

@@ -47,12 +47,12 @@ def call_llm_openai(system_prompt: str, user_input: str) -> str:
     raise NotImplementedError("OpenAI support is disabled. Using Gemini instead.")
 
 def call_llm_gemini(system_prompt: str, user_input: str) -> str:
-    """Call Google Gemini model (gemini-2.0-flash)"""
+    """Call Google Gemini model (gemini-1.5-flash - lightweight/economical)"""
     if not genai:
         raise RuntimeError("Google Generative AI not initialized. Check GEMINI_API_KEY.")
     
     model = genai.GenerativeModel(
-        model_name="gemini-2.0-flash",
+        model_name="gemini-1.5-flash",
         system_instruction=system_prompt
     )
     
