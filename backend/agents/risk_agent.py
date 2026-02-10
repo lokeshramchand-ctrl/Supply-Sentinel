@@ -4,7 +4,7 @@ from pathlib import Path
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 from models.schemas import AgentDecision, LLMDecision
-from agents.llm_client import call_local_llm as call_llm
+from agents.llm_client import call_llm
 from tools.actions import notify_ops_team, log_risk_event
 from observability.logger import log_agent_run
 from config.settings import settings
