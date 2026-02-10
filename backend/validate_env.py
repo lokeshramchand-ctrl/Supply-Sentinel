@@ -13,24 +13,20 @@ def validate_openai_key():
     api_key = os.getenv("OPENAI_API_KEY")
     
     if not api_key:
-        print("❌ ERROR: OPENAI_API_KEY not found in environment")
-        print("   Please set OPENAI_API_KEY in your .env file")
+        print("⚠️  OPENAI_API_KEY not found")
         return False
     
     if not api_key.startswith("sk-"):
-        print(f"⚠️  WARNING: OPENAI_API_KEY doesn't start with 'sk-' (found: {api_key[:10]}...)")
-        print("   This might not be a valid OpenAI API key")
+        print(f"⚠️  OPENAI_API_KEY doesn't start with 'sk-' (found: {api_key[:10]}...)")
         return False
     
-    # Test the API key with a simple request
     try:
         from openai import OpenAI
         client = OpenAI(api_key=api_key)
         
-        print(f"🔑 OpenAI API Key found: {api_key[:10]}...{api_key[-4:]}")
+        print(f"🔑 OpenAI API Key: {api_key[:10]}...{api_key[-4:]}")
         print("🧪 Testing OpenAI API connection...")
         
-        # Make a minimal test request
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": "test"}],
@@ -39,12 +35,36 @@ def validate_openai_key():
         
         print("✅ OpenAI API key is valid and working!")
         print(f"   Model: {response.model}")
-        print(f"   Response ID: {response.id}")
         return True
         
     except Exception as e:
-        print(f"❌ ERROR: OpenAI API key validation failed")
-        print(f"   Error: {str(e)}")
+        print(f"❌ OpenAI API key validation failed: {str(e)}")
+        return False
+
+def validate_gemini_key():
+    """Validate Google Gemini API key"""
+    api_key = os.getenv("GEMINI_API_KEY")
+    
+    if not api_key:
+        print("⚠️  GEMINI_API_KEY not found")
+        return False
+    
+    try:
+        import google.generativeai as genai
+        genai.configure(api_key=api_key)
+        
+        print(f"🔑 Google Gemini API Key: {api_key[:10]}...{api_key[-4:]}")
+        print("🧪 Testing Gemini API connection...")
+        
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content("test")
+        
+        print("✅ Gemini API key is valid and working!")
+        print(f"   Model: gemini-1.5-flash")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Gemini API key validation failed: {str(e)}")
         return False
 
 if __name__ == "__main__":
@@ -52,9 +72,22 @@ if __name__ == "__main__":
     print("🔍 Validating Environment Configuration")
     print("="*60 + "\n")
     
-    if not validate_openai_key():
-        print("\n⚠️  Environment validation failed!")
-        print("   The application will start but may not function correctly.\n")
+    llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
+    
+    print(f"📌 LLM Provider: {llm_provider}\n")
+    
+    # Always validate the configured provider
+    if llm_provider == "gemini":
+        if not validate_gemini_key():
+            print("\n⚠️  Gemini validation failed!")
+            sys.exit(1)
+    elif llm_provider == "openai":
+        if not validate_openai_key():
+            print("\n⚠️  OpenAI validation failed!")
+            sys.exit(1)
+    else:
+        print(f"❌ Unknown LLM_PROVIDER: {llm_provider}")
+        print("   Use 'openai' or 'gemini'")
         sys.exit(1)
     
     print("\n✅ All environment checks passed!")

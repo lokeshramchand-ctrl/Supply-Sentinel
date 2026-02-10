@@ -8,6 +8,8 @@ services:
       - "8000:8000"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
     volumes:
       - ./backend:/app
     command: sh -c "python validate_env.py && python seed_data.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
