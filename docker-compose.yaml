@@ -10,7 +10,7 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
       - ./backend:/app
-    command: sh -c "python seed_data.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    command: sh -c "python validate_env.py && python seed_data.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
     networks:
       - suppliesentinel-network
     healthcheck:
