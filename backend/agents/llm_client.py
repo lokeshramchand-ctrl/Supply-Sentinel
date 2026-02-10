@@ -35,7 +35,7 @@ load_dotenv()
 
 # Google Gemini Client
 try:
-    import google.generativeai as genai
+    import google.genai as genai
     gemini_key = os.getenv("GEMINI_API_KEY")
     if gemini_key:
         genai.configure(api_key=gemini_key)

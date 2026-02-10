@@ -1,4 +1,4 @@
-const BASE_URL = process.env.BASEURL || 'http://localhost:3000';
+const BASE_URL = process.env.BASEURL || 'http://localhost:8000';
 
 export async function fetchHistory() {
   const res = await fetch(`${BASE_URL}/agent/history`);
