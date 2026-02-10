@@ -1,23 +1,18 @@
 # LLM Configuration Guide
 
-SupplySentinel supports both **OpenAI** and **Google Gemini** as language model providers.
+SupplySentinel uses **Google Gemini** as the primary language model provider.
+
+> **Note:** OpenAI support is disabled. Only Gemini is active.
 
 ## Setup
 
-### 1. Add API Keys to `.env`
+### 1. Add API Key to `.env`
 
-Copy `.env.example` and update with your API keys:
+Copy `.env.example` and update with your Gemini API key:
 
 ```bash
 cp .env.example .env
 ```
-
-**For OpenAI:**
-```env
-OPENAI_API_KEY=sk-proj-your-full-openai-key-here
-```
-
-Get your key from: https://platform.openai.com/api-keys
 
 **For Google Gemini:**
 ```env
@@ -26,54 +21,38 @@ GEMINI_API_KEY=your-gemini-api-key-here
 
 Get your key from: https://aistudio.google.com/app/apikey
 
-### 2. Choose Your LLM Provider
+### 2. LLM Provider Selection
 
-Set `LLM_PROVIDER` in `.env`:
+Gemini is the default and only active provider:
 
 ```env
-# Use OpenAI (default)
-LLM_PROVIDER=openai
-
-# Or use Gemini
 LLM_PROVIDER=gemini
 ```
 
+OpenAI support is disabled and commented out in the code.
+
 ## Usage
 
-The application automatically uses the configured provider. No code changes needed!
+The application automatically uses Gemini. No configuration needed beyond setting `GEMINI_API_KEY`.
 
-### Starting with OpenAI:
+### Starting the application:
 ```bash
-export LLM_PROVIDER=openai
-docker-compose up
-```
-
-### Starting with Gemini:
-```bash
-export LLM_PROVIDER=gemini
-docker-compose up
+docker-compose up --build
 ```
 
 ## Models Used
 
-- **OpenAI**: `gpt-4o-mini`
-- **Gemini**: `gemini-1.5-flash`
+- **Gemini**: `gemini-2.0-flash`
 
 ## Validation
 
 On startup, the backend automatically:
-1. ✅ Checks for the configured API key
+1. ✅ Checks for Gemini API key
 2. ✅ Tests the connection with a simple API call
 3. ✅ Seeds the database with sample data
 4. ✅ Starts the server
 
 Look for logs like:
-```
-🔑 OpenAI API Key: sk-proj-...
-✅ OpenAI API key is valid and working!
-```
-
-Or for Gemini:
 ```
 🔑 Google Gemini API Key: AIza...
 ✅ Gemini API key is valid and working!
@@ -81,40 +60,30 @@ Or for Gemini:
 
 ## Programmatic Usage
 
-If you need to use specific providers in code:
+The recommended way to use the LLM:
 
 ```python
-from agents.llm_client import call_llm_openai, call_llm_gemini
-
-# Use OpenAI specifically
-response = call_llm_openai(system_prompt, user_input)
-
-# Use Gemini specifically
-response = call_llm_gemini(system_prompt, user_input)
-
-# Use configured provider (recommended)
 from agents.llm_client import call_llm
+
+# Use Gemini (default and only active provider)
 response = call_llm(system_prompt, user_input)
 ```
 
-## Troubleshooting
+> **Note:** `call_llm_openai()` is deprecated and disabled.
 
-**"OPENAI_API_KEY not found"**
-- Set `OPENAI_API_KEY` in your `.env` file
-- Ensure `.env` is in the root directory
+## Troubleshooting
 
 **"GEMINI_API_KEY not found"**
 - Set `GEMINI_API_KEY` in your `.env` file
-- Ensure it's a valid Google Gemini API key
+- Ensure it's a valid Google Gemini API key from: https://aistudio.google.com/app/apikey
 
-**"Unknown LLM_PROVIDER"**
-- Check `LLM_PROVIDER` is set to `openai` or `gemini`
-- Default is `openai` if not specified
+**API validation fails at startup**
+- Check your internet connection - the API key is validated with a test request
+- Verify the API key is correct and active
 
 ## Environment Variables Summary
 
-| Variable | Required | Example |
-|----------|----------|---------|
-| `OPENAI_API_KEY` | For OpenAI provider | `sk-proj-...` |
-| `GEMINI_API_KEY` | For Gemini provider | `AIza...` |
-| `LLM_PROVIDER` | No (default: openai) | `openai` or `gemini` |
+| Variable | Required | Default | Example |
+|----------|----------|---------|---------|
+| `GEMINI_API_KEY` | ✅ Yes | - | `AIza...` |
+| `LLM_PROVIDER` | No | `gemini` | `gemini` |

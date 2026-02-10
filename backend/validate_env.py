@@ -56,11 +56,11 @@ def validate_gemini_key():
         print(f"🔑 Google Gemini API Key: {api_key[:10]}...{api_key[-4:]}")
         print("🧪 Testing Gemini API connection...")
         
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content("test")
         
         print("✅ Gemini API key is valid and working!")
-        print(f"   Model: gemini-1.5-flash")
+        print(f"   Model: gemini-2.0-flash")
         return True
         
     except Exception as e:
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     print("🔍 Validating Environment Configuration")
     print("="*60 + "\n")
     
-    llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
+    llm_provider = os.getenv("LLM_PROVIDER", "gemini").lower()
     
     print(f"📌 LLM Provider: {llm_provider}\n")
     
@@ -82,12 +82,13 @@ if __name__ == "__main__":
             print("\n⚠️  Gemini validation failed!")
             sys.exit(1)
     elif llm_provider == "openai":
-        if not validate_openai_key():
-            print("\n⚠️  OpenAI validation failed!")
+        print("⚠️  OpenAI support is disabled. Using Gemini instead.")
+        if not validate_gemini_key():
+            print("\n⚠️  Gemini validation failed!")
             sys.exit(1)
     else:
         print(f"❌ Unknown LLM_PROVIDER: {llm_provider}")
-        print("   Use 'openai' or 'gemini'")
+        print("   Use 'gemini' (default)")
         sys.exit(1)
     
     print("\n✅ All environment checks passed!")
