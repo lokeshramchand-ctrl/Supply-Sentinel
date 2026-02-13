@@ -1,34 +1,21 @@
-services:
+# services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: suppliesentinel-backend
-    ports:
-      - "8000:8000"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - LLM_PROVIDER=${LLM_PROVIDER:-gemini}
-    volumes:
-      - ./backend:/app
-    command: sh -c "python validate_env.py && python seed_data.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
-    networks:
-      - suppliesentinel-network
-
+    command: sh -c "python validate_env.py && python seed_data.py && uvicorn main:app --host 0.0.0.0 --port 8000"
+    expose:
+      - "8000"
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: suppliesentinel-frontend
-    ports:
-      - "3000:3000"
     depends_on:
       - backend
-    networks:
-      - suppliesentinel-network
-
-networks:
-  suppliesentinel-network:
-    driver: bridge
+    expose:
+      - "3000"
